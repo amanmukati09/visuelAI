@@ -5,12 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CldImage } from "next-cloudinary";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Pagination, PaginationContent, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { transformationTypes } from "@/constants";
 import { IImage } from "@/lib/database/models/image.model";
 import { formUrlQuery } from "@/lib/utils";
@@ -56,7 +51,7 @@ export const Collection = ({
       {images.length > 0 ? (
         <ul className="collection-list">
           {images.map((image) => (
-            <Card image={image} key={image._id} />
+            <Card image={image} key={String(image._id)} />
           ))}
         </ul>
       ) : (
@@ -68,11 +63,7 @@ export const Collection = ({
       {totalPages > 1 && (
         <Pagination className="mt-10">
           <PaginationContent className="flex w-full">
-            <Button
-              disabled={Number(page) <= 1}
-              className="collection-btn"
-              onClick={() => onPageChange("prev")}
-            >
+            <Button disabled={Number(page) <= 1} className="collection-btn" onClick={() => onPageChange("prev")}>
               <PaginationPrevious className="hover:bg-transparent hover:text-white" />
             </Button>
 
@@ -109,15 +100,9 @@ const Card = ({ image }: { image: IImage }) => {
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
         />
         <div className="flex-between">
-          <p className="p-20-semibold mr-3 line-clamp-1 text-dark-600">
-            {image.title}
-          </p>
+          <p className="p-20-semibold mr-3 line-clamp-1 text-dark-600">{image.title}</p>
           <Image
-            src={`/assets/icons/${
-              transformationTypes[
-                image.transformationType as TransformationTypeKey
-              ].icon
-            }`}
+            src={`/assets/icons/${transformationTypes[image.transformationType as TransformationTypeKey].icon}`}
             alt={image.title}
             width={24}
             height={24}
